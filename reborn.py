@@ -4,7 +4,7 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix = '.')
 rebornHeader = 'Reborn Bot:'
-eventChannelId = os.environ['channel']
+eventChannelId = int(os.environ['channel'])
 botToken = os.environ['token']
 
 @bot.event
