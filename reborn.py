@@ -18,6 +18,19 @@ async def on_ready():
 	print('bot is ready')
 
 @bot.command()
+async def help(ctx):
+	embed = discord.Embed(
+		colour = discord.Colour.orange()
+	)
+	
+	embed.set_author(name='Help')
+	embed.add_field(name='.zakum' value='Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00')
+	embed.add_field(name='.scarga' value='Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00')
+	embed.add_field(name='.cwkpq' value='Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00')
+	embed.add_field(name='.ht' value='Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00')
+	embed.add_field(name='.apq' value='Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00')
+
+@bot.command()
 async def zakum(ctx, inputTime):
 	channel = bot.get_channel(eventChannelId)
 	message = await channel.send(f'{rebornHeader}\n<@&{zakumId}> scheduled for {inputTime} UTC.\n\n' + 
