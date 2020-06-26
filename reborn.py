@@ -19,13 +19,18 @@ async def on_ready():
 
 @bot.command()
 async def help(ctx, inputTime):
-	embed = discord.Embed(title="Help", colour = discord.Colour.orange())
-	embed.add_field(name=".zakum" value="Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00", inline=False)
-	embed.add_field(name=".scarga" value="Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00", inline=False)
-	embed.add_field(name=".cwkpq" value="Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00", inline=False)
-	embed.add_field(name=".ht" value="Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00", inline=False)
-	embed.add_field(name=".apq" value="Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00", inline=False)
-	await ctx.send(embed)
+	#embed = discord.Embed(title="Help", colour = discord.Colour.orange())
+	#embed.add_field(name=".zakum" value="Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00", inline=False)
+	#embed.add_field(name=".scarga" value="Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00", inline=False)
+	#embed.add_field(name=".cwkpq" value="Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00", inline=False)
+	#embed.add_field(name=".ht" value="Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00", inline=False)
+	#embed.add_field(name=".apq" value="Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00", inline=False)
+	await ctx.send("Help\n" +
+		".zakum: Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00\n\n" + 
+		".scarga: Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00\n\n" +
+		".cwkpq: Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00\n\n" +
+		".ht: Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00\n\n" +
+		".apq: Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00")
 
 @bot.command()
 async def zakum(ctx, inputTime):
