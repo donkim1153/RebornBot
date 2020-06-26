@@ -19,11 +19,8 @@ async def on_ready():
 
 @bot.command()
 async def help(ctx):
-	embed = discord.Embed(
-		colour = discord.Colour.orange()
-	)
-	
-	embed.set_author(name='Help')
+	embed = discord.Embed(title="Help", colour = discord.Colour.orange())
+	embed.set_author(name='DiscordBot')
 	embed.add_field(name='.zakum' value='Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00', inline=False)
 	embed.add_field(name='.scarga' value='Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00', inline=False)
 	embed.add_field(name='.cwkpq' value='Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00', inline=False)
