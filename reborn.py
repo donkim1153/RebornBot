@@ -66,7 +66,7 @@ async def cwkpq(ctx, inputTime):
 		await message.add_reaction(emoji)
 	rewardMsg = await channel.send('Also react for PQ reward\n' +
 		':regional_indicator_m: MON/Payout\n' +
-		':regional_indicator_b Bonus')
+		':regional_indicator_b: Bonus')
 	rewardReactions = ['🇲', '🇧']
 	for emoji in rewardReactions:
 		await rewardMsg.add_reaction(emoji)
