@@ -14,7 +14,7 @@ async def on_ready():
 @bot.command()
 async def zakum(ctx, inputTime):
 	channel = bot.get_channel(eventChannelId)
-	message = await channel.send(f'{rebornHeader}\nZakum scheduled for {inputTime} UTC.\n\n' + 
+	message = await channel.send(f'{rebornHeader}\n@Zakum scheduled for {inputTime} UTC.\n\n' + 
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
 		':regional_indicator_r: Ranged\n' +
@@ -30,7 +30,7 @@ async def zakum(ctx, inputTime):
 @bot.command()
 async def scarga(ctx, inputTime):
 	channel = bot.get_channel(eventChannelId)
-	message = await channel.send(f'{rebornHeader}\nScarga scheduled for {inputTime} UTC.\n\n' + 
+	message = await channel.send(f'{rebornHeader}\n@Scarga scheduled for {inputTime} UTC.\n\n' + 
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
 		':regional_indicator_r: Ranged\n' +
@@ -47,7 +47,7 @@ async def scarga(ctx, inputTime):
 @bot.command()
 async def cwkpq(ctx, inputTime):
 	channel = bot.get_channel(eventChannelId)
-	message = await channel.send(f'{rebornHeader}\nCWKPQ scheduled for {inputTime} UTC.\n\n' + 
+	message = await channel.send(f'{rebornHeader}\n@CWKPQ scheduled for {inputTime} UTC.\n\n' + 
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_a: Archer\n' +
 		':regional_indicator_w: Warrior\n' +
@@ -74,7 +74,7 @@ async def cwkpq(ctx, inputTime):
 @bot.command()
 async def ht(ctx, inputTime):
 	channel = bot.get_channel(eventChannelId)
-	message = await channel.send(f'{rebornHeader}\nScarga scheduled for {inputTime} UTC.\n\n' + 
+	message = await channel.send(f'{rebornHeader}\n@Horntail scheduled for {inputTime} UTC.\n\n' + 
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
 		':regional_indicator_s: Seduce\n' +
