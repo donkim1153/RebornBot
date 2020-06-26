@@ -18,7 +18,7 @@ async def on_ready():
 	print('bot is ready')
 
 @bot.command(name="commandList")
-async def commandList(ctx, inputTime):
+async def commandList(ctx):
 	#embed = discord.Embed(title="Help", colour = discord.Colour.orange())
 	#embed.add_field(name=".zakum" value="Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00", inline=False)
 	#embed.add_field(name=".scarga" value="Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00", inline=False)
