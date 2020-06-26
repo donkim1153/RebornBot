@@ -29,6 +29,7 @@ async def help(ctx):
 	embed.add_field(name='.cwkpq' value='Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00')
 	embed.add_field(name='.ht' value='Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00')
 	embed.add_field(name='.apq' value='Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00')
+	await ctx.send(embed)
 
 @bot.command()
 async def zakum(ctx, inputTime):
