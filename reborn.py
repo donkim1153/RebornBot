@@ -10,8 +10,8 @@ import asyncio
 
 bot = commands.Bot(command_prefix = '.')
 rebornHeader = 'Reborn Bot:'
-eventChannelId = 729800756210696312
-botToken = "NzI5Nzk2OTU4MTM0MjA2NDY1.XwOLLg.geKmgcx5NqzJDOD7m5ab8i0Rzlk"
+eventChannelId = int(os.environ['channel'])
+botToken = os.environ['token']
 
 zakumId = 712803871486902332
 scargaId = 713819098961805335
