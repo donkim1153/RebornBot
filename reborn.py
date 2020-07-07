@@ -10,14 +10,16 @@ import asyncio
 
 bot = commands.Bot(command_prefix = '.')
 rebornHeader = 'Reborn Bot:'
-eventChannelId = int(os.environ['channel'])
-botToken = os.environ['token']
+eventChannelId = 729800756210696312
+botToken = "NzI5Nzk2OTU4MTM0MjA2NDY1.XwOLLg.geKmgcx5NqzJDOD7m5ab8i0Rzlk"
 
 zakumId = 712803871486902332
 scargaId = 713819098961805335
 cwkpqId = 711792105361637457
 htId = 712393075699220482
 apqId = 711765855125373020
+gpqId = 712778006208184320
+
 
 timezones = [
 	'US/Eastern',
@@ -32,7 +34,8 @@ eventDict = {
 	'scarga': scargaId,
 	'cwkpq': cwkpqId,
 	'ht': htId,
-	'apq': apqId
+	'apq': apqId,
+	'gpq': gpqId
 }
 
 eventTracker = {
@@ -40,7 +43,8 @@ eventTracker = {
 	'scarga': [],
 	'cwkpq': [],
 	'ht': [],
-	'apq': []
+	'apq': [],
+	'gpq': []
 }
 
 
@@ -61,7 +65,8 @@ async def commandList(ctx):
 		".scarga: Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00\n\n" +
 		".cwkpq: Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00\n\n" +
 		".ht: Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00\n\n" +
-		".apq: Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00")
+		".apq: Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00" + 
+		".gpq: Sets a gpq run. Parameters taken is a time in UTC.\n ex of usage: .gpq 0:00")
 
 @bot.command()
 async def zakum(ctx, inputTime):
@@ -72,11 +77,12 @@ async def zakum(ctx, inputTime):
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
 		':regional_indicator_r: Ranged\n' +
-		':regional_indicator_m: Melee\n\n' +
-		'Roster:\n' +
-		':regional_indicator_b: Bishop:\n' +
-		':regional_indicator_r: Ranged:\n' +
-		':regional_indicator_m: Melee:\n')
+		':regional_indicator_m: Melee\n\n' 
+		#'Roster:\n' +
+		#':regional_indicator_b: Bishop:\n' +
+		#':regional_indicator_r: Ranged:\n' +
+		#':regional_indicator_m: Melee:\n'
+		)
 	reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
@@ -169,7 +175,24 @@ async def apq(ctx, inputTime):
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 	eventTracker['apq'].append(generateTimeObject(inputTime))
-		
+	
+@bot.command()
+async def gpq(ctx, inputTime):
+	channel = bot.get_channel(eventChannelId)
+	localized_times = utcToLocalizedTzs(inputTime)
+	message = await channel.send(f'{rebornHeader}\n<@&{gpqId}> scheduled for:\n\n' +
+		localized_times + 
+		'Please react with the following to sign up:\n' +
+		':regional_indicator_m: Mage\n' +
+		':regional_indicator_t: Thief\n' +
+		':regional_indicator_n: Noob (low level char)\n' +
+		':regional_indicator_o: Other\n'
+		)
+	reactions = ['🇲', '🇹']
+	for emoji in reactions:
+		await message.add_reaction(emoji)
+		print('adding emoji')
+	eventTracker['gpq'].append(generateTimeObject(inputTime))
 
 
 def validateInput(stringTime, timeZone):
@@ -208,6 +231,7 @@ async def checkEvents():
 			temp_list=[]
 			if list:
 				for t in list:
+					#print(t, flush=True)
 					if t - timedelta(minutes=15) < time_now:
 						temp_list.append(t)
 						await reminder(eventDict.get(event))
