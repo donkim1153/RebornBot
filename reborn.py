@@ -22,6 +22,7 @@ timezones = [
 	'US/Eastern',
 	'US/Pacific',
 	'Asia/Singapore',
+	'Australia/Sydney',
 	'Israel'
 ]
 
