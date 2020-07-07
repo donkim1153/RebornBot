@@ -188,7 +188,7 @@ async def gpq(ctx, inputTime):
 		':regional_indicator_n: Noob (low level char)\n' +
 		':regional_indicator_o: Other\n'
 		)
-	reactions = ['🇲', '🇹']
+	reactions = ['🇲', '🇹', '🇳', '🇴']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 		print('adding emoji')
