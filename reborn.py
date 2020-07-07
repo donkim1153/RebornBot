@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from pytz import timezone
 import pytz
 import discord
@@ -6,6 +6,7 @@ import os
 import re
 import copy
 from discord.ext import commands
+import asyncio
 
 bot = commands.Bot(command_prefix = '.')
 rebornHeader = 'Reborn Bot:'
@@ -22,12 +23,30 @@ timezones = [
 	'US/Eastern',
 	'US/Pacific',
 	'Asia/Singapore',
+	'Australia/Sydney',
 	'Israel'
 ]
 
+eventDict = {
+	'zakum': zakumId,
+	'scarga': scargaId,
+	'cwkpq': cwkpqId,
+	'ht': htId,
+	'apq': apqId
+}
+
+eventTracker = {
+	'zakum': [],
+	'scarga': [],
+	'cwkpq': [],
+	'ht': [],
+	'apq': []
+}
+
+
 @bot.event
 async def on_ready():
-	print('bot is ready')
+	print('bot is ready', flush=True)
 
 @bot.command(name="commandList")
 async def commandList(ctx):
@@ -61,6 +80,8 @@ async def zakum(ctx, inputTime):
 	reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
+	eventTracker['zakum'].append(generateTimeObject(inputTime))
+	#scheduleReminder(inputTime, 'zakum')
 
 @bot.command()
 async def scarga(ctx, inputTime):
@@ -80,6 +101,7 @@ async def scarga(ctx, inputTime):
 	reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
+	eventTracker['scarga'].append(generateTimeObject(inputTime))
 
 @bot.command()
 async def cwkpq(ctx, inputTime):
@@ -109,6 +131,7 @@ async def cwkpq(ctx, inputTime):
 	rewardReactions = ['🇲', '🇧']
 	for emoji in rewardReactions:
 		await rewardMsg.add_reaction(emoji)
+	eventTracker['cwkpq'].append(generateTimeObject(inputTime))
 
 @bot.command()
 async def ht(ctx, inputTime):
@@ -130,6 +153,7 @@ async def ht(ctx, inputTime):
 	reactions = ['🇧', '🇸', '🇦']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
+	eventTracker['ht'].append(generateTimeObject(inputTime))
 
 @bot.command()
 async def apq(ctx, inputTime):
@@ -144,12 +168,15 @@ async def apq(ctx, inputTime):
 	reactions = ['🇧', '🇬']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
+	eventTracker['apq'].append(generateTimeObject(inputTime))
+		
+
 
 def validateInput(stringTime, timeZone):
 	time_re = re.compile(r'^\d?\d:\d\d$')
 	return True if time_re.match(stringTime) and timezoneDict.get(timeZone) != None else False
 
-def utcToLocalizedTzs(inputTime):
+def generateTimeObject(inputTime):
 	input_time_obj = datetime.strptime(inputTime, '%H:%M')
 	time_now = datetime.now(tz=pytz.utc) # offset aware datetime
 	scheduled_utc_time = time_now.replace(
@@ -162,9 +189,38 @@ def utcToLocalizedTzs(inputTime):
 	if scheduled_utc_time < time_now:
 		scheduled_utc_time + timedelta(days=1)
 
+	return scheduled_utc_time
+
+def utcToLocalizedTzs(inputTime):
+	scheduled_utc_time = generateTimeObject(inputTime)
+	
 	localizedTimes = [
 		('• ' + scheduled_utc_time.astimezone(pytz.timezone(tz)).strftime('%H:%M') + ' ' + tz) for tz in timezones
 	]
 	return '**Localized Timezones:** \n' + "\n".join(localizedTimes) + '\n\n'
 
+async def checkEvents():
+	await bot.wait_until_ready()
+	while True:
+		#print('checking events',flush=True)
+		time_now = datetime.now(tz=pytz.utc)
+		for event, list in eventTracker.items():
+			temp_list=[]
+			if list:
+				for t in list:
+					if t - timedelta(minutes=15) < time_now:
+						temp_list.append(t)
+						await reminder(eventDict.get(event))
+						
+				for t in temp_list:
+					eventTracker[event].remove(t)
+		#print('finished checking events', flush=True)
+		await asyncio.sleep(60)
+
+async def reminder(eventId):
+	channel = bot.get_channel(eventChannelId)
+	await channel.send(f'{rebornHeader}\nReminder, <@&' + str(eventId) + '> starting in 15 minutes!\n')
+
+
+bot.loop.create_task(checkEvents())
 bot.run(botToken)
