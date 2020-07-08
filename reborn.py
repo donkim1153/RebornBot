@@ -180,7 +180,7 @@ async def apq(ctx, inputTime):
 async def gpq(ctx, inputTime):
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{gpqId}> scheduled for:\n\n' +
+	message = await channel.send(f'{rebornHeader}\n<@&{gpqId}> scheduled for {inputTime} UTC.\n\n' +
 		localized_times + 
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_m: Mage\n' +
@@ -210,7 +210,7 @@ def generateTimeObject(inputTime):
 		)
 	# assume scheduled time needs to be in the future
 	if scheduled_utc_time < time_now:
-		scheduled_utc_time + timedelta(days=1)
+		scheduled_utc_time = scheduled_utc_time + timedelta(days=1)
 
 	return scheduled_utc_time
 
@@ -228,16 +228,11 @@ async def checkEvents():
 		#print('checking events',flush=True)
 		time_now = datetime.now(tz=pytz.utc)
 		for event, list in eventTracker.items():
-			temp_list=[]
 			if list:
 				for t in list:
-					#print(t, flush=True)
 					if t - timedelta(minutes=15) < time_now:
-						temp_list.append(t)
+						eventTracker[event].remove(t)
 						await reminder(eventDict.get(event))
-						
-				for t in temp_list:
-					eventTracker[event].remove(t)
 		#print('finished checking events', flush=True)
 		await asyncio.sleep(60)
 
