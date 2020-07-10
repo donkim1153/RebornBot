@@ -10,8 +10,8 @@ import asyncio
 
 bot = commands.Bot(command_prefix = '.')
 rebornHeader = 'Reborn Bot:'
-eventChannelId = int(os.environ['channel'])
-botToken = os.environ['token']
+eventChannelId = 729800756210696312
+botToken = "NzI5Nzk2OTU4MTM0MjA2NDY1.XwQXmg.MphG-zcGCI15BRyVKZvAg0POAyQ"
 
 zakumId = 712803871486902332
 scargaId = 713819098961805335
@@ -60,19 +60,22 @@ async def commandList(ctx):
 	#embed.add_field(name=".cwkpq" value="Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00", inline=False)
 	#embed.add_field(name=".ht" value="Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00", inline=False)
 	#embed.add_field(name=".apq" value="Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00", inline=False)
-	await ctx.send("Help\n" +
-		".zakum: Sets a zakum run. Parameters taken is a time in UTC.\n ex of usage: .zakum 0:00\n\n" +
-		".scarga: Sets a scarga run. Parameters taken is a time in UTC.\n ex of usage: .scarga 0:00\n\n" +
-		".cwkpq: Sets a cwkpq run. Parameters taken is a time in UTC.\n ex of usage: .cwkpq 0:00\n\n" +
-		".ht: Sets a horntail run. Parameters taken is a time in UTC.\n ex of usage: .ht 0:00\n\n" +
-		".apq: Sets a apq run. Parameters taken is a time in UTC.\n ex of usage: .apq 0:00" + 
-		".gpq: Sets a gpq run. Parameters taken is a time in UTC.\n ex of usage: .gpq 0:00")
+	await ctx.send("Event List: [zakum, scarga, cwkpq, ht, apq, gpq]\n\n" +
+		".{event}: Sets an event run. Parameters: time (required, hh:mm in UTC), date (optional, mm-dd)\n\n" + 
+		"Example usage:\n" +
+		".zakum 0:00\n" +
+		".scarga 2:00 7-23\n\n"
+		)
 
 @bot.command()
-async def zakum(ctx, inputTime):
+async def zakum(ctx, inputTime, inputDate=str(date.today())[5:]):
 	channel = bot.get_channel(eventChannelId)
-	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{zakumId}> scheduled for {inputTime} UTC.\n\n' +
+	localized_times = utcToLocalizedTzs(inputTime, inputDate)
+	time_object = generateTimeObject(inputTime, inputDate)
+	#print(inputDate, flush=True)
+	message = await channel.send(f'{rebornHeader}\n<@&{zakumId}> scheduled for ' + 
+		time_object.strftime('%m/%d').lstrip('0').replace('/0','/') + 
+		f' - {inputTime} UTC.\n\n' +
 		localized_times +
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
@@ -84,16 +87,18 @@ async def zakum(ctx, inputTime):
 		#':regional_indicator_m: Melee:\n'
 		)
 	#reactions = ['🇧', '🇷', '🇲']
-	for emoji in reactions:
-		await message.add_reaction(emoji)
-	#eventTracker['zakum'].append(generateTimeObject(inputTime))
-	eventTracker['zakum'][message.id] = generateTimeObject(inputTime)
+	#for emoji in reactions:
+		#await message.add_reaction(emoji)
+	eventTracker['zakum'][message.id] = time_object
 
 @bot.command()
-async def scarga(ctx, inputTime):
+async def scarga(ctx, inputTime, inputDate=str(date.today())[5:]):
 	channel = bot.get_channel(eventChannelId)
-	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{scargaId}> scheduled for {inputTime} UTC.\n\n' +
+	localized_times = utcToLocalizedTzs(inputTime, inputDate)
+	time_object = generateTimeObject(inputTime, inputDate)
+	message = await channel.send(f'{rebornHeader}\n<@&{scargaId}> scheduled for ' + 
+		time_object.strftime('%m/%d').lstrip('0').replace('/0','/') + 
+		f' - {inputTime} UTC.\n\n' +
 		localized_times +
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
@@ -105,16 +110,18 @@ async def scarga(ctx, inputTime):
 		#':regional_indicator_m: Melee:\n'
 		)
 	#reactions = ['🇧', '🇷', '🇲']
-	for emoji in reactions:
-		await message.add_reaction(emoji)
-	#eventTracker['scarga'].append(generateTimeObject(inputTime))
-	eventTracker['scarga'][message.id] = generateTimeObject(inputTime)
+	#for emoji in reactions:
+		#await message.add_reaction(emoji)
+	eventTracker['scarga'][message.id] = time_object
 
 @bot.command()
-async def cwkpq(ctx, inputTime):
+async def cwkpq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	channel = bot.get_channel(eventChannelId)
-	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{cwkpqId}> scheduled for {inputTime} UTC.\n\n' +
+	localized_times = utcToLocalizedTzs(inputTime, inputDate)
+	time_object = generateTimeObject(inputTime, inputDate)
+	message = await channel.send(f'{rebornHeader}\n<@&{cwkpqId}> scheduled for ' + 
+		time_object.strftime('%m/%d').lstrip('0').replace('/0','/') + 
+		f' - {inputTime} UTC.\n\n' +
 		localized_times +
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_a: Archer\n' +
@@ -130,22 +137,24 @@ async def cwkpq(ctx, inputTime):
 		#':regional_indicator_t: Thief\n\n' +
 		)
 	#reactions = ['🇦', '🇼', '🇲', '🇵', '🇹']
-	for emoji in reactions:
-		await message.add_reaction(emoji)
+	#for emoji in reactions:
+		#await message.add_reaction(emoji)
 	rewardMsg = await channel.send('Also react for PQ reward\n' +
 		':regional_indicator_m: MON/Payout\n' +
 		':regional_indicator_b: Bonus')
-	rewardReactions = ['🇲', '🇧']
-	for emoji in rewardReactions:
-		await rewardMsg.add_reaction(emoji)
-	#eventTracker['cwkpq'].append(generateTimeObject(inputTime))
-	eventTracker['cwkpq'][message.id] = generateTimeObject(inputTime)
+	#rewardReactions = ['🇲', '🇧']
+	#for emoji in rewardReactions:
+		#await rewardMsg.add_reaction(emoji)
+	eventTracker['cwkpq'][message.id] = time_object
 
 @bot.command()
-async def ht(ctx, inputTime):
+async def ht(ctx, inputTime, inputDate=str(date.today())[5:]):
 	channel = bot.get_channel(eventChannelId)
-	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{htId}> scheduled for {inputTime} UTC.\n\n' +
+	localized_times = utcToLocalizedTzs(inputTime, inputDate)
+	time_object = generateTimeObject(inputTime, inputDate)
+	message = await channel.send(f'{rebornHeader}\n<@&{htId}> scheduled for ' + 
+		time_object.strftime('%m/%d').lstrip('0').replace('/0','/') + 
+		f' - {inputTime} UTC.\n\n' +
 		localized_times +
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bishop\n' +
@@ -159,32 +168,36 @@ async def ht(ctx, inputTime):
 		#':regional_indicator_t: Thief\n\n' +
 		)
 	#reactions = ['🇧', '🇸', '🇦']
-	for emoji in reactions:
-		await message.add_reaction(emoji)
-	#eventTracker['ht'].append(generateTimeObject(inputTime))
-	eventTracker['ht'][message.id] = generateTimeObject(inputTime)
+	#for emoji in reactions:
+		#await message.add_reaction(emoji)
+	eventTracker['ht'][message.id] = time_object
 
 @bot.command()
-async def apq(ctx, inputTime):
+async def apq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	channel = bot.get_channel(eventChannelId)
-	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{apqId}> scheduled for {inputTime} UTC.\n\n' +
+	localized_times = utcToLocalizedTzs(inputTime, inputDate)
+	time_object = generateTimeObject(inputTime, inputDate)
+	message = await channel.send(f'{rebornHeader}\n<@&{apqId}> scheduled for ' + 
+		time_object.strftime('%m/%d').lstrip('0').replace('/0','/') + 
+		f' - {inputTime} UTC.\n\n' +
 		localized_times +
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_b: Bride\n' +
 		':regional_indicator_g: Groom'
 		)
 	#reactions = ['🇧', '🇬']
-	for emoji in reactions:
-		await message.add_reaction(emoji)
-	#eventTracker['apq'].append(generateTimeObject(inputTime))
-	eventTracker['apq'][message.id] = generateTimeObject(inputTime)
+	#for emoji in reactions:
+		#await message.add_reaction(emoji)
+	eventTracker['apq'][message.id] = time_object
 	
 @bot.command()
-async def gpq(ctx, inputTime):
+async def gpq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	channel = bot.get_channel(eventChannelId)
-	localized_times = utcToLocalizedTzs(inputTime)
-	message = await channel.send(f'{rebornHeader}\n<@&{gpqId}> scheduled for {inputTime} UTC.\n\n' +
+	localized_times = utcToLocalizedTzs(inputTime, inputDate)
+	time_object = generateTimeObject(inputTime, inputDate)
+	message = await channel.send(f'{rebornHeader}\n<@&{gpqId}> scheduled for ' + 
+		time_object.strftime('%m/%d').lstrip('0').replace('/0','/') + 
+		f' - {inputTime} UTC.\n\n' +
 		localized_times + 
 		'Please react with the following to sign up:\n' +
 		':regional_indicator_m: Mage\n' +
@@ -193,11 +206,10 @@ async def gpq(ctx, inputTime):
 		':regional_indicator_o: Other\n'
 		)
 	#reactions = ['🇲', '🇹', '🇳', '🇴']
-	for emoji in reactions:
-		await message.add_reaction(emoji)
-		print('adding emoji')
-	#eventTracker['gpq'].append(generateTimeObject(inputTime))
-	eventTracker['gpq'][message.id] = generateTimeObject(inputTime)
+	#for emoji in reactions:
+		#await message.add_reaction(emoji)
+		#print('adding emoji')
+	eventTracker['gpq'][message.id] = time_object
 	
 
 @bot.event
@@ -218,10 +230,13 @@ def validateInput(stringTime, timeZone):
 	time_re = re.compile(r'^\d?\d:\d\d$')
 	return True if time_re.match(stringTime) and timezoneDict.get(timeZone) != None else False
 
-def generateTimeObject(inputTime):
+def generateTimeObject(inputTime, inputDate):
 	input_time_obj = datetime.strptime(inputTime, '%H:%M')
+	input_date_obj = datetime.strptime(inputDate, '%m-%d')
 	time_now = datetime.now(tz=pytz.utc) # offset aware datetime
 	scheduled_utc_time = time_now.replace(
+			month=input_date_obj.month,
+			day=input_date_obj.day,
 			hour=input_time_obj.hour,
 			minute=input_time_obj.minute,
 			second=0,
@@ -230,14 +245,15 @@ def generateTimeObject(inputTime):
 	# assume scheduled time needs to be in the future
 	if scheduled_utc_time < time_now:
 		scheduled_utc_time = scheduled_utc_time + timedelta(days=1)
-
+	
+	#print(scheduled_utc_time, flush=True)
 	return scheduled_utc_time
 
-def utcToLocalizedTzs(inputTime):
-	scheduled_utc_time = generateTimeObject(inputTime)
+def utcToLocalizedTzs(inputTime, inputDate):
+	scheduled_utc_time = generateTimeObject(inputTime, inputDate)
 	
 	localizedTimes = [
-		('• ' + scheduled_utc_time.astimezone(pytz.timezone(tz)).strftime('%H:%M') + ' ' + tz) for tz in timezones
+		('• ' + scheduled_utc_time.astimezone(pytz.timezone(tz)).strftime('%m/%d - %H:%M').lstrip('0').replace('/0', '/') + ' ' + tz) for tz in timezones
 	]
 	return '**Localized Timezones:** \n' + "\n".join(localizedTimes) + '\n\n'
 
@@ -252,7 +268,6 @@ async def checkEvents():
 				for id, t in dict.items():
 					#print(t, flush=True)
 					if t - timedelta(minutes=15) < time_now:
-						#eventTracker[event].remove(t)
 						temp_list.append(id)
 						await reminder(eventDict.get(event))
 				for id in temp_list:
