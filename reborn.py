@@ -273,7 +273,7 @@ async def checkEvents():
 				for id in temp_list:
 					del eventTracker[event][id]
 		#print('finished checking events', flush=True)
-		await asyncio.sleep(5)
+		await asyncio.sleep(60)
 
 async def reminder(eventId):
 	channel = bot.get_channel(eventChannelId)
