@@ -39,12 +39,12 @@ eventDict = {
 }
 
 eventTracker = {
-	'zakum': [],
-	'scarga': [],
-	'cwkpq': [],
-	'ht': [],
-	'apq': [],
-	'gpq': []
+	'zakum': {},
+	'scarga': {},
+	'cwkpq': {},
+	'ht': {},
+	'apq': {},
+	'gpq': {}
 }
 
 
@@ -86,8 +86,8 @@ async def zakum(ctx, inputTime):
 	reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
-	eventTracker['zakum'].append(generateTimeObject(inputTime))
-	#scheduleReminder(inputTime, 'zakum')
+	#eventTracker['zakum'].append(generateTimeObject(inputTime))
+	eventTracker['zakum'][message.id] = generateTimeObject(inputTime)
 
 @bot.command()
 async def scarga(ctx, inputTime):
@@ -107,7 +107,8 @@ async def scarga(ctx, inputTime):
 	reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
-	eventTracker['scarga'].append(generateTimeObject(inputTime))
+	#eventTracker['scarga'].append(generateTimeObject(inputTime))
+	eventTracker['scarga'][message.id] = generateTimeObject(inputTime)
 
 @bot.command()
 async def cwkpq(ctx, inputTime):
@@ -137,7 +138,8 @@ async def cwkpq(ctx, inputTime):
 	rewardReactions = ['🇲', '🇧']
 	for emoji in rewardReactions:
 		await rewardMsg.add_reaction(emoji)
-	eventTracker['cwkpq'].append(generateTimeObject(inputTime))
+	#eventTracker['cwkpq'].append(generateTimeObject(inputTime))
+	eventTracker['cwkpq'][message.id] = generateTimeObject(inputTime)
 
 @bot.command()
 async def ht(ctx, inputTime):
@@ -159,7 +161,8 @@ async def ht(ctx, inputTime):
 	reactions = ['🇧', '🇸', '🇦']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
-	eventTracker['ht'].append(generateTimeObject(inputTime))
+	#eventTracker['ht'].append(generateTimeObject(inputTime))
+	eventTracker['ht'][message.id] = generateTimeObject(inputTime)
 
 @bot.command()
 async def apq(ctx, inputTime):
@@ -174,7 +177,8 @@ async def apq(ctx, inputTime):
 	reactions = ['🇧', '🇬']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
-	eventTracker['apq'].append(generateTimeObject(inputTime))
+	#eventTracker['apq'].append(generateTimeObject(inputTime))
+	eventTracker['apq'][message.id] = generateTimeObject(inputTime)
 	
 @bot.command()
 async def gpq(ctx, inputTime):
@@ -192,7 +196,22 @@ async def gpq(ctx, inputTime):
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 		print('adding emoji')
-	eventTracker['gpq'].append(generateTimeObject(inputTime))
+	#eventTracker['gpq'].append(generateTimeObject(inputTime))
+	eventTracker['gpq'][message.id] = generateTimeObject(inputTime)
+	
+
+@bot.event
+async def on_message_delete(message):
+	#print(message, flush=True)
+	for event, dict in eventTracker.items():
+		if dict:
+			temp_list = []
+			for id in dict.keys():
+				if id == message.id:
+					temp_list.append(id)
+			for id in temp_list:
+				del eventTracker[event][id]
+					
 
 
 def validateInput(stringTime, timeZone):
@@ -227,14 +246,19 @@ async def checkEvents():
 	while True:
 		#print('checking events',flush=True)
 		time_now = datetime.now(tz=pytz.utc)
-		for event, list in eventTracker.items():
-			if list:
-				for t in list:
+		for event, dict in eventTracker.items():
+			if dict:
+				temp_list = []
+				for id, t in dict.items():
+					#print(t, flush=True)
 					if t - timedelta(minutes=15) < time_now:
-						eventTracker[event].remove(t)
+						#eventTracker[event].remove(t)
+						temp_list.append(id)
 						await reminder(eventDict.get(event))
+				for id in temp_list:
+					del eventTracker[event][id]
 		#print('finished checking events', flush=True)
-		await asyncio.sleep(60)
+		await asyncio.sleep(5)
 
 async def reminder(eventId):
 	channel = bot.get_channel(eventChannelId)
