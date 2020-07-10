@@ -83,7 +83,7 @@ async def zakum(ctx, inputTime):
 		#':regional_indicator_r: Ranged:\n' +
 		#':regional_indicator_m: Melee:\n'
 		)
-	reactions = ['🇧', '🇷', '🇲']
+	#reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 	#eventTracker['zakum'].append(generateTimeObject(inputTime))
@@ -104,7 +104,7 @@ async def scarga(ctx, inputTime):
 		#':regional_indicator_r: Ranged:\n' +
 		#':regional_indicator_m: Melee:\n'
 		)
-	reactions = ['🇧', '🇷', '🇲']
+	#reactions = ['🇧', '🇷', '🇲']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 	#eventTracker['scarga'].append(generateTimeObject(inputTime))
@@ -129,7 +129,7 @@ async def cwkpq(ctx, inputTime):
 		#':regional_indicator_p: Pirate\n' +
 		#':regional_indicator_t: Thief\n\n' +
 		)
-	reactions = ['🇦', '🇼', '🇲', '🇵', '🇹']
+	#reactions = ['🇦', '🇼', '🇲', '🇵', '🇹']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 	rewardMsg = await channel.send('Also react for PQ reward\n' +
@@ -158,7 +158,7 @@ async def ht(ctx, inputTime):
 		#':regional_indicator_p: Pirate\n' +
 		#':regional_indicator_t: Thief\n\n' +
 		)
-	reactions = ['🇧', '🇸', '🇦']
+	#reactions = ['🇧', '🇸', '🇦']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 	#eventTracker['ht'].append(generateTimeObject(inputTime))
@@ -174,7 +174,7 @@ async def apq(ctx, inputTime):
 		':regional_indicator_b: Bride\n' +
 		':regional_indicator_g: Groom'
 		)
-	reactions = ['🇧', '🇬']
+	#reactions = ['🇧', '🇬']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 	#eventTracker['apq'].append(generateTimeObject(inputTime))
@@ -192,7 +192,7 @@ async def gpq(ctx, inputTime):
 		':regional_indicator_n: Noob (low level char)\n' +
 		':regional_indicator_o: Other\n'
 		)
-	reactions = ['🇲', '🇹', '🇳', '🇴']
+	#reactions = ['🇲', '🇹', '🇳', '🇴']
 	for emoji in reactions:
 		await message.add_reaction(emoji)
 		print('adding emoji')
