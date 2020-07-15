@@ -24,9 +24,9 @@ gpqId = 712778006208184320
 timezones = [
 	'US/Eastern',
 	'US/Pacific',
+	'Israel',
 	'Asia/Singapore',
-	'Australia/Sydney',
-	'Israel'
+	'Australia/Sydney'
 ]
 
 eventDict = {
