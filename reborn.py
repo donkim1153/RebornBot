@@ -21,9 +21,9 @@ apqId = 711765855125373020
 gpqId = 712778006208184320
 
 
-timezones = [
-	'US/Eastern',
+timezones = [	
 	'US/Pacific',
+	'US/Eastern',
 	'Asia/Singapore',
 	'Australia/Sydney',
 	'Israel'
