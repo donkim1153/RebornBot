@@ -68,7 +68,9 @@ async def commandList(ctx):
 		)
 
 @bot.command()
-async def zakum(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def zakum(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
 	if (validateInput(inputTime, inputDate) == False):
 		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
 		raise Exception("Invalid input")
@@ -95,7 +97,9 @@ async def zakum(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['zakum'][message.id] = time_object
 
 @bot.command()
-async def scarga(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def scarga(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
 	if (validateInput(inputTime, inputDate) == False):
 		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
 		raise Exception("Invalid input")
@@ -121,7 +125,9 @@ async def scarga(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['scarga'][message.id] = time_object
 
 @bot.command()
-async def cwkpq(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def cwkpq(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
 	if (validateInput(inputTime, inputDate) == False):
 		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
 		raise Exception("Invalid input")
@@ -157,7 +163,9 @@ async def cwkpq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['cwkpq'][message.id] = time_object
 
 @bot.command()
-async def ht(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def ht(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
 	if (validateInput(inputTime, inputDate) == False):
 		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
 		raise Exception("Invalid input")
@@ -185,7 +193,9 @@ async def ht(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['ht'][message.id] = time_object
 
 @bot.command()
-async def apq(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def apq(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
 	if (validateInput(inputTime, inputDate) == False):
 		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
 		raise Exception("Invalid input")
@@ -206,7 +216,9 @@ async def apq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['apq'][message.id] = time_object
 	
 @bot.command()
-async def gpq(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def gpq(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
 	if (validateInput(inputTime, inputDate) == False):
 		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
 		raise Exception("Invalid input")
