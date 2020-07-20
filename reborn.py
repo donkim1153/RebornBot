@@ -21,9 +21,9 @@ apqId = 711765855125373020
 gpqId = 712778006208184320
 
 
-timezones = [
-	'US/Eastern',
+timezones = [	
 	'US/Pacific',
+	'US/Eastern',
 	'Israel',
 	'Asia/Singapore',
 	'Australia/Sydney'
@@ -68,7 +68,12 @@ async def commandList(ctx):
 		)
 
 @bot.command()
-async def zakum(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def zakum(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
+	if (validateInput(inputTime, inputDate) == False):
+		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
+		raise Exception("Invalid input")
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime, inputDate)
 	time_object = generateTimeObject(inputTime, inputDate)
@@ -92,7 +97,12 @@ async def zakum(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['zakum'][message.id] = time_object
 
 @bot.command()
-async def scarga(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def scarga(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
+	if (validateInput(inputTime, inputDate) == False):
+		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
+		raise Exception("Invalid input")
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime, inputDate)
 	time_object = generateTimeObject(inputTime, inputDate)
@@ -115,7 +125,12 @@ async def scarga(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['scarga'][message.id] = time_object
 
 @bot.command()
-async def cwkpq(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def cwkpq(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
+	if (validateInput(inputTime, inputDate) == False):
+		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
+		raise Exception("Invalid input")
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime, inputDate)
 	time_object = generateTimeObject(inputTime, inputDate)
@@ -148,7 +163,12 @@ async def cwkpq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['cwkpq'][message.id] = time_object
 
 @bot.command()
-async def ht(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def ht(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
+	if (validateInput(inputTime, inputDate) == False):
+		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
+		raise Exception("Invalid input")
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime, inputDate)
 	time_object = generateTimeObject(inputTime, inputDate)
@@ -173,7 +193,12 @@ async def ht(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['ht'][message.id] = time_object
 
 @bot.command()
-async def apq(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def apq(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
+	if (validateInput(inputTime, inputDate) == False):
+		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
+		raise Exception("Invalid input")
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime, inputDate)
 	time_object = generateTimeObject(inputTime, inputDate)
@@ -191,7 +216,12 @@ async def apq(ctx, inputTime, inputDate=str(date.today())[5:]):
 	eventTracker['apq'][message.id] = time_object
 	
 @bot.command()
-async def gpq(ctx, inputTime, inputDate=str(date.today())[5:]):
+async def gpq(ctx, inputTime, inputDate=None):
+	if inputDate == None:
+		inputDate = str(date.today())[5:]
+	if (validateInput(inputTime, inputDate) == False):
+		await ctx.send("Please ensure your inputs are in the format time=##:##, date=MM-DD (date is optional)")
+		raise Exception("Invalid input")
 	channel = bot.get_channel(eventChannelId)
 	localized_times = utcToLocalizedTzs(inputTime, inputDate)
 	time_object = generateTimeObject(inputTime, inputDate)
@@ -243,7 +273,7 @@ def generateTimeObject(inputTime, inputDate):
 			microsecond=0,
 		)
 	# assume scheduled time needs to be in the future
-	if scheduled_utc_time < time_now:
+	while scheduled_utc_time < time_now:
 		scheduled_utc_time = scheduled_utc_time + timedelta(days=1)
 	
 	#print(scheduled_utc_time, flush=True)
@@ -256,6 +286,13 @@ def utcToLocalizedTzs(inputTime, inputDate):
 		('• ' + scheduled_utc_time.astimezone(pytz.timezone(tz)).strftime('%m/%d - %H:%M').lstrip('0').replace('/0', '/') + ' ' + tz) for tz in timezones
 	]
 	return '**Localized Timezones:** \n' + "\n".join(localizedTimes) + '\n\n'
+	
+def validateInput(inputTime, inputDate):
+	print('validating string', flush=True);
+	time_re = re.compile(r'^\d?\d:\d\d$')
+	date_re = re.compile(r'\d{1,2}-\d{1,2}')
+	
+	return True if time_re.match(inputTime) and date_re.match(inputDate) else False
 
 async def checkEvents():
 	await bot.wait_until_ready()
